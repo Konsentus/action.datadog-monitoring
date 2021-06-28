@@ -1,0 +1,26 @@
+{
+  "name": "action.datadog-monitoring",
+  "version": "0.0.1",
+  "description": "GitHub action to allow dashboard/monitor templates to be uploaded automatically",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "ncc build index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Konsentus/action.datadog-monitoring.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Konsentus/action.datadog-monitoring/issues"
+  },
+  "homepage": "https://github.com/Konsentus/action.datadog-monitoring#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.4",
+    "@octokit/action": "^2.7.1",
+    "@octokit/rest": "^17.9.2",
+    "axios": "^0.19.2",
+    "moment": "^2.26.0"
+  },
+  "devDependencies": {}
+}

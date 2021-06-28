@@ -1,0 +1,15 @@
+name: 'Build and deploy Datadog monitor or dashboard files'
+description: 'Uses templating logic to build valid JSON payloads to create monitors or dashboards in Datadog'
+branding:
+  icon: bar-chart
+  color: light-blue
+inputs:
+  configuration:
+    description: 'string - path location to yaml file, containing list configuration to deploy montitors/metrics'
+    required: true
+  datadog_url_location:
+    description: 'string - eu or com depending on where your datadog endpoint is located (EU or US respectively). Required if no `send_to_dd` provided.'
+    required: false
+runs:
+  using: 'node14'
+  main: 'dist/index.js'
