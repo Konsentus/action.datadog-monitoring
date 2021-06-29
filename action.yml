@@ -14,5 +14,5 @@ inputs:
     description: 'string - eu or com depending on where your datadog endpoint is located (EU or US respectively). Required if no `send_to_dd` provided.'
     required: false
 runs:
-  using: 'node14'
+  using: 'node12'
   main: 'dist/index.js'

@@ -5,7 +5,7 @@ To handle Datadog {{#is_alert}} a raw helpers exists please use this to set it. 
 
 e.g.
 
-monitor.template.json
+Template saved to: `./integrations/datadog/monitors/monitor.template.json`
 
 ```json
 {
@@ -14,7 +14,7 @@ monitor.template.json
 }
 ```
 
-Would then be accessed by the following
+Would then be implement in a workflow by the following
 
 ```yaml
 env:
@@ -26,9 +26,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy application
-        uses: application-deploy-action
+        uses: application-deploy-action #
 
-        name: deploy monitor
+      - name: deploy monitor
         uses: konsentus/action.datadog-monitoring@v1.0
         with:
           template_location: './integrations/datadog/monitors/monitor.template.json'
