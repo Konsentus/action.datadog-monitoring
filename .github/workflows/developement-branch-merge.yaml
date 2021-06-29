@@ -1,0 +1,60 @@
+name: Push workflow for development branches (feature/hotfix)
+on:
+  push:
+    branches:
+      - 'feature/**'
+      - 'hotfix/**'
+
+env:
+  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+jobs:
+  jstest:
+    name: Run JavaScript unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Extract branch name
+        run: echo "APP_ENV=${GITHUB_BASE_REF#refs/heads/}" >> $GITHUB_ENV
+
+      - name: Setup environment variables
+        uses: konsentus/action.set-env@master
+
+      - name: Prepare Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install SSH Key
+        run: |
+          mkdir ~/.ssh && chmod 700 ~/.ssh
+          echo "${{ secrets.BOT_SSH_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+          eval $(ssh-agent)
+          ssh-add ~/.ssh/id_rsa
+
+      - name: Install & Run Unit Tests
+        run: |
+          npm ci
+          npm run unit-test
+
+  snyk_node:
+    name: Scan Node dependencies with Snyk
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Run Snyk Scan
+        id: snyk_scan
+        uses: konsentus/action.snyk/node@master
+        with:
+          options: '--severity-threshold=high'
+
+      - name: Store Snyk results
+        if: failure()
+        uses: actions/upload-artifact@v1
+        with:
+          name: snyk-node-dependancy-results
+          path: ${{ steps.snyk_scan.outputs.results }}

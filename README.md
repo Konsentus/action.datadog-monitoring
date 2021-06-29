@@ -46,3 +46,15 @@ This would result in a monitor template with output.
   "message":"{{#is_alert}} Monitor failed in env: test {{/is_alert}}"
 }
 ```
+
+## Local development
+
+Installing and running tests
+
+`npm i`
+
+`npm run unit-test`
+
+## CI/CD
+
+GHA set up to run unit-tests and snyk on build
