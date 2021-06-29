@@ -47,6 +47,12 @@ This would result in a monitor template with output.
 }
 ```
 
+## Inputs
+
+- template_location: string - location of the monitor/dashboard template
+- template_type: string - monitor/dashboard - depending on what you have selected
+- datadog_url_location: string com/eu - depending where your datadog instace is located
+
 ## Local development
 
 Installing and running tests
