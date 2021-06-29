@@ -5,7 +5,9 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "ncc build index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "unit-test": "NODE_PATH=./ jest ./src --config jest.unit.config.js --coverage ",
+    "lint": "./node_modules/.bin/eslint --ext js index.js ./src",
+    "lint-fix": "npm run lint -- --fix"
   },
   "repository": {
     "type": "git",
@@ -20,7 +22,30 @@
     "@octokit/action": "^2.7.1",
     "@octokit/rest": "^17.9.2",
     "axios": "^0.19.2",
+    "handlebars": "^4.7.7",
     "moment": "^2.26.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "jest": "^24.5.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-jest": "^23.11.0",
+    "husky": "^1.3.1",
+    "lint-staged": "^8.1.5"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint-fix",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "post-merge": "npm i",
+      "pre-commit": "lint-staged",
+      "pre-push": "npm run unit-test"
+    }
+  }
 }

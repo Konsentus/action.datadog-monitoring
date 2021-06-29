@@ -1,22 +1,48 @@
 # action.datadog-monitoring
 
-GitHub action to allow dashboard/monitor templates to be uploaded automatically
+GitHub action to allow dashboard/monitor templates to be uploaded automatically, requires template variables to be named `TEMPLATE_*` and templating is called with {{TEMPLATE_*}}.
+To handle Datadog {{#is_alert}} a raw helpers exists please use this to set it. {{ raw '{{#is_alert}}'}}
 
-## Configuration
+e.g.
 
-As we will be using a templating language, key value pairs will need to be provided to the GHA to allow templating to, it should also be obvious what parameters are used in the templating as each monitor/dashboard has the potential to be unique.
+monitor.template.json
 
-### configuration file
-
-Path to yaml configuration file which will deploy the monitor/dashboard has form of:
-
-```yaml
----
-- type: monitor
-  template_parameters:
-    env:
+```json
+{
+  "title":"{{TEMPLATE_ENV}} - My awesome monitor:",
+  "message":"{{ raw '{{#is_alert}}'}} Monitor failed in env: {{TEMPLATE_ENV}} {{ raw '{{/is_alert}}'}}"
+}
 ```
 
-### environment variables
+Would then be accessed by the following
 
-### bring templating out of the action?
+```yaml
+env:
+  DATADOG_TOKEN: ${{ secrets.DATADOG_TOKEN }}
+  DATADOG_APPLICATION_KEY: ${{ secrets.DATADOG_APPLICATION_KEY }}
+
+jobs:
+  main: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy application
+        uses: application-deploy-action
+
+        name: deploy monitor
+        uses: konsentus/action.datadog-monitoring@v1.0
+        with:
+          template_location: './integrations/datadog/monitors/monitor.template.json'
+          template_type: 'monitor'
+          datadog_url_location: 'com'
+        env:
+          TEMPLATE_ENV: test
+```
+
+This would result in a monitor template with output.
+
+```json
+{
+  "title":"test - My awesome monitor:",
+  "message":"{{#is_alert}} Monitor failed in env: test {{/is_alert}}"
+}
+```

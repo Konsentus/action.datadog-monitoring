@@ -1,11 +1,14 @@
 name: 'Build and deploy Datadog monitor or dashboard files'
-description: 'Uses templating logic to build valid JSON payloads to create monitors or dashboards in Datadog'
+description: 'Uses templating logic to build valid JSON payloads to create monitors or dashboards in Datadog, template parameters are sent through as environment variables starting with `TEMPLATE_` to make it clear what is being created.'
 branding:
   icon: bar-chart
   color: light-blue
 inputs:
-  configuration:
-    description: 'string - path location to yaml file, containing list configuration to deploy montitors/metrics'
+  template_location:
+    description: 'string - path location to JSON template file'
+    required: true
+  template_type:
+    description: 'string - monitor|dashboard'
     required: true
   datadog_url_location:
     description: 'string - eu or com depending on where your datadog endpoint is located (EU or US respectively). Required if no `send_to_dd` provided.'

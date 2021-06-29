@@ -1,27 +1,38 @@
 const core = require('@actions/core');
-
-const buildTemplate = (template, parameters) => {
-  const builtTemplate = ''; // Use template library to build this (Handlebars?)
-  return builtTemplate;
-};
-
-const sendMonitorToDatadog = (builtTemplate, params) => {
-  return ''; //Use axios (or a DD Axios helper to update or create monitor)
-};
-
-const sendDashboardToDatadog = (builtTemplate, params) => {
-  return ''; //Use axios (or a DD Axios helper to update or create dashboard)
-};
+const { sendMonitorToDatadog, sendDashboardToDatadog, parseTemplate } = require('./src');
 
 const run = async () => {
   const datadogApiKey = process.env.DATADOG_TOKEN;
   const datadogApplicationKey = process.env.DATADOG_APPLICATION_KEY;
-  const configuration = core.getInput('configuration');
+  const templateLocation = core.getInput('template_location');
   const datadogLocation = core.getInput('datadog_url_location');
+  const templateType = core.getInput('template_type');
 
-  // use fs to get configuration and JSON parse
-  // Verify configuration is of right format
-  // build and deploy each configuration items with the above helper functions
+  core.info('templateLocation: ', templateLocation);
+  core.info('templateType: ', templateType);
+
+  const axiosConfig = {
+    baseURL: `https://api.datadoghq.${datadogLocation}/api/v1/`,
+    headers: {
+      'Content-Type': 'application/json',
+      'DD-API-KEY': datadogApiKey,
+      'DD-APPLICATION-KEY': datadogApplicationKey,
+    },
+  };
+
+  const parsedTemplate = parseTemplate(templateLocation);
+
+  switch (templateType) {
+    case 'monitor':
+      sendMonitorToDatadog(parsedTemplate, axiosConfig);
+      break;
+    case 'dashboard':
+      sendDashboardToDatadog(parsedTemplate, axiosConfig);
+      break;
+    default:
+      Error('Please select monitor or dashboard');
+      break;
+  }
 };
 
 run();
