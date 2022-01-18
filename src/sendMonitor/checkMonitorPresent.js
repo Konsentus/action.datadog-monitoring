@@ -14,7 +14,7 @@ const checkMonitorPresent = async (title, config) => {
       data: { monitors },
     } = await axios({
       ...config,
-      url: `/monitor/search?query=title:${title}`,
+      url: `/monitor/search?query=title:"${title}"`,
       method: 'get',
     });
 
