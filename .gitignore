@@ -135,3 +135,6 @@ lambda/*/src/package-lock.json
 
 # AWS CDK
 !infra/lib/
+
+# build output
+dist

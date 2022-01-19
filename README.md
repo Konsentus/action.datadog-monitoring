@@ -64,3 +64,8 @@ Installing and running tests
 ## CI/CD
 
 GHA set up to run unit-tests and snyk on build
+
+## Release process
+
+1. Create a semantically tagged GitHub release.
+2. When a release is published or edited, `.github/workflows/publish.yaml` workflow will automatically build project and adjust tags keeping major (v1) and minor (v1.1) tags current to the latest appropriate commit.
