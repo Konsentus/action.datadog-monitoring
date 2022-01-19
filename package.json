@@ -4,7 +4,7 @@
   "description": "GitHub action to allow dashboard/monitor templates to be uploaded automatically",
   "main": "dist/index.js",
   "scripts": {
-    "build": "ncc build index.js",
+    "build": "npx @vercel/ncc build && npx convert-action",
     "unit-test": "NODE_PATH=./ jest ./src --config jest.unit.config.js --coverage ",
     "lint": "./node_modules/.bin/eslint --ext js index.js ./src",
     "lint-fix": "npm run lint -- --fix"
