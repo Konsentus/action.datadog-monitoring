@@ -1,5 +1,0 @@
-{
-  "name": "{{ TEMPLATE_ENV }} test monitor",
-  "message": "{{raw '{{#is_alert}}'}}\nTest healthcheck{{raw '{{/is_alert}}'}}",
-  "tags": ["type:log", "env:{{TEMPLATE_ENV}}"]
-}
