@@ -16,7 +16,16 @@ const createDashboard = async (config, body) => {
       url: '/dashboard',
     });
   } catch (err) {
+    core.info(
+      JSON.stringify({
+        ...config,
+        data: body,
+        method: 'post',
+        url: '/dashboard',
+      }),
+    );
     core.setFailed(`createDashboard: Action failed with error ${err}`);
+
     Error(`createDashboard: Action failed with error ${err}`);
   }
 };
